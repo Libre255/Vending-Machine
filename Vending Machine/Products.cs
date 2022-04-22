@@ -34,8 +34,8 @@ namespace Vending_Machine
               :base(DrinkName, DrinkPrice, DrinkDescription){}
         public override void Use()
         {
-            WriteLine($"You drinked the {Name}");
             Used = true;
+            WriteLine($"You drinked the {Name}");
         }
 
     }

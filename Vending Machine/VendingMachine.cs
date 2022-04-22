@@ -2,7 +2,7 @@
 
 namespace Vending_Machine
 {
-    public partial class VendingMachine : MyAccountInfo, IVending
+    public partial class VendingMachine : IVending
     {
         string[] MainMenuOptions = { "Show all products", "Insert Money", "End Transaction", "My Account" };
         readonly int[] MoneyDenominations = { 1, 5, 10, 20, 50, 100, 500, 1000 };
@@ -65,24 +65,6 @@ namespace Vending_Machine
         public void EndTransaction()
         {
 
-        }
-        public void MyAccount()
-        {
-            Menu MyAccountMenu = new Menu("Your Account info", new string[] { "My items", "Vending machine money pool", "Go back" });
-            int SelectedOption = MyAccountMenu.Start();
-            switch (SelectedOption)
-            {
-                case 0:
-                    MyItems(MyAccount());
-                    break;
-                case 1:
-                    VendingMachineMoneyPool();
-                    MyAccount();
-                    break;
-                case 2:
-                    Start_VendingMachine();
-                    break;
-            }
         }
         private int NrValidator()
         {
