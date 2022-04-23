@@ -6,8 +6,12 @@ namespace Vending_Machine
         List<AProduct> Products = new List<AProduct>()
         {
             new Chips("Olitas Del Mar", 40, "Sea salted chips from Catalandia"),
-            new ProteinBar("Vegan Chocholate Proteinbar", 50, "Planet friendly protein bar with delicious chocholate flavor"),
-            new Drink("Coca Cola", 35, "The classic of them all, Coca cola! Perfect drink for all occasions")
+            new ProteinBar("Vegan Chocholate Proteinbar", 80, "Planet friendly protein bar with delicious chocholate flavor"),
+            new Drink("Coca Cola", 45, "The classic of them all, Coca cola! Perfect drink for all occasions"),
+            new Drink("Fanta", 30, "Orange juice with extra energi!"),
+            new ProteinBar("Vanilla Proteinbar", 70, "Extra protein with a delicious flavor of vanilla!"),
+            new Chips("Chili Capitan", 62, "Sourchili chips, perfect balance of spice, flavor and salt!"),
+            new Drink("Dr Pepper", 49, "the World's Oldest Major Soft Drink")
         };
 
         public void ShowAll()

@@ -7,6 +7,7 @@ namespace Vending_Machine
         string[] MainMenuOptions = { "Show all products", "Insert Money", "End Transaction", "My Account" };
         readonly int[] MoneyDenominations = { 1, 5, 10, 20, 50, 100, 500, 1000 };
         private int MoneyPool = 0;
+
         public void Start_VendingMachine()
         {
             Menu MainMenu = new Menu("Welcom to my vending Machine!", MainMenuOptions);
@@ -48,12 +49,12 @@ namespace Vending_Machine
         {
             if(MoneyPool == 0)
             {
-                WriteLine("You haven't money on the vending machine");
+                WriteLine(">> You haven't money on the vending machine");
             }
             else
             {
                 WriteLine("Thanks for using the vending machine! ");
-                WriteLine($"Here is your change: {MoneyPool}kr");
+                WriteLine($"Here is your change: [ {MoneyPool}kr ]");
                 MoneyPool = 0;
             }
             PressAny_Key_To_Go_Back();
@@ -61,7 +62,7 @@ namespace Vending_Machine
         }
         private void PressAny_Key_To_Go_Back()
         {
-            WriteLine("Press any key to go back");
+            WriteLine("> Press any key to go back");
             ReadKey();
         }
     }
