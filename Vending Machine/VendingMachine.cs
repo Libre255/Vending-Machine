@@ -26,20 +26,23 @@ namespace Vending_Machine
         }
         public void InsertMoney()
         {
-            //You could also create a menu and select the money denomination you would like to insert
-            Clear();
-            WriteLine("Please insert the amount of money for the vending machine. ");
-            WriteLine("You can only insert the following coins/bills.");
-            foreach(int MD in MoneyDenominations) Write($" [{MD}kr] ");
-            WriteLine('\n');
+            string [] MoneyOptions = MoneyDenominations.Select(Money => $"[ {Money}kr ]").Append("Go back").ToArray();
+            Menu MoneyDenominationMenu = new Menu(">Please select the amount of money you want you insert to the vending machine.", MoneyOptions);
+            int SelectedAmount = MoneyDenominationMenu.Start();
 
-            int InsertedMoney = Validate_Money_Input();
-            MoneyPool += InsertedMoney;
+            if(SelectedAmount == MoneyDenominations.Length)
+            {
+                Start_VendingMachine();
+            }
+            else
+            {
+                MoneyPool += MoneyDenominations[SelectedAmount];
+                WriteLine($"+ You inserted: {MoneyDenominations[SelectedAmount]} ");
+                WriteLine($"+ Your current balance is now: {MoneyPool} ");
+                PressAny_Key_To_Go_Back();
+                Start_VendingMachine();
+            }
 
-            WriteLine($"+ You inserted: {InsertedMoney} ");
-            WriteLine($"+ Your current balance is now: {MoneyPool} ");
-            PressAny_Key_To_Go_Back();
-            Start_VendingMachine();
         }
         public void EndTransaction()
         {
@@ -55,20 +58,6 @@ namespace Vending_Machine
             }
             PressAny_Key_To_Go_Back();
             Start_VendingMachine();
-        }
-        private int Validate_Money_Input()
-        {
-            int wrongInputRun = 1;
-            int numberOutput;
-            string userInput;
-            do
-            {
-                if (wrongInputRun >= 2) WriteLine("You can only insert the coins/bills writed above, please try again");
-                
-                userInput = ReadLine();
-                wrongInputRun++;
-            } while (!int.TryParse(userInput, out numberOutput) || numberOutput <= 0 || !MoneyDenominations.Contains(numberOutput));
-            return numberOutput;
         }
         private void PressAny_Key_To_Go_Back()
         {
