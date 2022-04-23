@@ -22,8 +22,7 @@ namespace Vending_Machine
         {
             WriteLine($"Name: {Name}" + '\n' +
                      $"Price: {Price}" + '\n' +
-                     $"Description: {Description}" + '\n' +
-                     $"Used:{Used}");
+                     $"Description: {Description}");
         }
         public abstract void Use();
     }
@@ -35,7 +34,7 @@ namespace Vending_Machine
         public override void Use()
         {
             Used = true;
-            WriteLine($"You drinked the {Name}");
+            WriteLine($"** Drinked the {Name} **");
         }
 
     }
@@ -46,7 +45,7 @@ namespace Vending_Machine
        
         public override void Use()
         {
-            WriteLine($"You eated the chips {Name}");
+            WriteLine($"** Eated the chips {Name} **");
             Used = true;
         }
     }
@@ -56,7 +55,7 @@ namespace Vending_Machine
                base(ProteinBarName, ProteinBarPrice, ProteinBarDescription){}
         public override void Use()
         {
-            WriteLine($"You eated the proteinbar {Name}");
+            WriteLine($"** Eated the proteinbar {Name} **");
             Used = true;
         }
     } 

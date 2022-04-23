@@ -6,14 +6,7 @@ namespace Vending_Machine
     {
         string[] MainMenuOptions = { "Show all products", "Insert Money", "End Transaction", "My Account" };
         readonly int[] MoneyDenominations = { 1, 5, 10, 20, 50, 100, 500, 1000 };
-        int SelectedProductIndex; 
-        List<AProduct> Products = new List<AProduct>()
-        {
-            new Chips("Olitas Del Mar", 40, "Sea salted chips from Catalandia"),
-            new ProteinBar("Vegan Chocholate Proteinbar", 50, "Planet friendly protein bar with delicious chocholate flavor"),
-            new Drink("Coca Cola", 35, "The classic of them all, Coca cola! Perfect drink for all occasions")
-        };
-        
+        private int MoneyPool = 0;
         public void Start_VendingMachine()
         {
             Menu MainMenu = new Menu("Welcom to my vending Machine!", MainMenuOptions);
@@ -31,57 +24,56 @@ namespace Vending_Machine
                     break;
             }
         }
-        public void ShowAll()
-        {
-            string[] ProductsName = Products.Select(p => p.Name).ToArray();
-            Menu ProductsMenu = new Menu("Select the product that you want to buy", ProductsName);
-            int SPI = ProductsMenu.Start();
-            SelectedProductIndex = SPI;
-            PurchaseSystem();
-        }
         public void InsertMoney()
         {
+            //You could also create a menu and select the money denomination you would like to insert
             Clear();
             WriteLine("Please insert the amount of money for the vending machine. ");
             WriteLine("You can only insert the following coins/bills.");
-            foreach(int MD in MoneyDenominations)
-            {
-                Write($" [{MD}kr] ");
-            }
+            foreach(int MD in MoneyDenominations) Write($" [{MD}kr] ");
             WriteLine('\n');
 
-            int Input = NrValidator();
-            bool correctInput = MoneyDenominations.Contains(Input);
-            while (!correctInput)
-            {
-                InsertMoney();
-            }
-            MoneyPool += Input;
-            WriteLine($"You inserted: {MoneyPool} ");
-            WriteLine("Press any key to go back");
-            ReadKey();
+            int InsertedMoney = Validate_Money_Input();
+            MoneyPool += InsertedMoney;
+
+            WriteLine($"+ You inserted: {InsertedMoney} ");
+            WriteLine($"+ Your current balance is now: {MoneyPool} ");
+            PressAny_Key_To_Go_Back();
             Start_VendingMachine();
         }
         public void EndTransaction()
         {
-
+            if(MoneyPool == 0)
+            {
+                WriteLine("You haven't money on the vending machine");
+            }
+            else
+            {
+                WriteLine("Thanks for using the vending machine! ");
+                WriteLine($"Here is your change: {MoneyPool}kr");
+                MoneyPool = 0;
+            }
+            PressAny_Key_To_Go_Back();
+            Start_VendingMachine();
         }
-        private int NrValidator()
+        private int Validate_Money_Input()
         {
-            int checkRuns = 1;
+            int wrongInputRun = 1;
             int numberOutput;
-            string input;
+            string userInput;
             do
             {
-                if (checkRuns >= 2)
-                {
-                    WriteLine("You can only write numbers(no negatives), please try again");
-                }
-                input = ReadLine();
-                checkRuns++;
-            } while (!int.TryParse(input, out numberOutput) || numberOutput <= 0);
+                if (wrongInputRun >= 2) WriteLine("You can only insert the coins/bills writed above, please try again");
+                
+                userInput = ReadLine();
+                wrongInputRun++;
+            } while (!int.TryParse(userInput, out numberOutput) || numberOutput <= 0 || !MoneyDenominations.Contains(numberOutput));
             return numberOutput;
         }
-
+        private void PressAny_Key_To_Go_Back()
+        {
+            WriteLine("Press any key to go back");
+            ReadKey();
+        }
     }
 }

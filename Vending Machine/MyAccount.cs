@@ -4,11 +4,7 @@ namespace Vending_Machine
 {
     public partial class VendingMachine
     {
-        protected int MoneyPool = 0;
-        protected List<AProduct> MyPurchasedItems = new List<AProduct>()
-        {
-            new Chips("Olitas Del Mar", 40, "Sea salted chips from Catalandia")
-        };
+        protected List<AProduct> MyPurchasedItems = new List<AProduct>();
         public void MyAccount()
         {
             Menu MyAccountMenu = new Menu("Your Account info", new string[] { "My items", "Vending machine money pool", "Go back" });
@@ -36,7 +32,7 @@ namespace Vending_Machine
         {
             if (MyPurchasedItems.Count <= 0)
             {
-                WriteLine("You haven't purchased anything yet");
+                WriteLine("You have no items");
                 GoBackToMyAccount();
             }
             else
@@ -59,41 +55,37 @@ namespace Vending_Machine
         protected void ItemInfo(int ItemIndex)
         {
             AProduct Item = MyPurchasedItems[ItemIndex];
-            Menu ItemMenu = new Menu(Item.Name, new string[] { "Use", "Description", "Go back" });
+            Menu ItemMenu = new Menu($" [ {Item.Name} ]", new string[] { "Use", "Description", "Go back" });
             int SelectedOption = ItemMenu.Start();
 
-            if(SelectedOption == 0 && SelectedOption == 1)
-            {
-
-            }
             switch (SelectedOption)
             {
-                case 0:
-                    Item.Use();
-                    GoBackToMyItemMenu(ItemIndex);
+                case 0:UseItem(Item);
                     break;
-                case 1:
-                    Item.Examine();
-                    GoBackToMyItemMenu(ItemIndex);
+                case 1:ExamineMyItem(Item, ItemIndex);
                     break;
-                case 2:
-                    MyItems();
+                case 2:MyItems();
                     break;
             }
         }
-
-        protected void GoBackToMyAccount()
+        private void UseItem(AProduct Item)
         {
-            WriteLine("Press any key to go back");
-            ReadKey();
-            MyAccount();
+            Item.Use();
+            MyPurchasedItems.RemoveAll(ItemInfo => ItemInfo.Used);
+            PressAny_Key_To_Go_Back();
+            Clear();
+            MyItems();
         }
-        private void GoBackToMyItemMenu(int ItemIndex)
+        private void ExamineMyItem(AProduct Item, int ItemIndex)
         {
-            WriteLine("Press any key to go back");
-            ReadKey();
+            Item.Examine();
+            PressAny_Key_To_Go_Back();
             ItemInfo(ItemIndex);
         }
-        
+        protected void GoBackToMyAccount()
+        {
+            PressAny_Key_To_Go_Back();
+            MyAccount();
+        }
     }
 }
