@@ -10,7 +10,7 @@ namespace Vending_Machine
 
         public void Start_VendingMachine()
         {
-            Menu MainMenu = new Menu("Welcom to my vending Machine!", MainMenuOptions);
+            Menu MainMenu = new("Welcom to my vending Machine!", MainMenuOptions);
             int SelectedIndex_Item = MainMenu.Start();
 
             switch (SelectedIndex_Item)
@@ -28,7 +28,7 @@ namespace Vending_Machine
         public void InsertMoney()
         {
             string [] MoneyOptions = MoneyDenominations.Select(Money => $"[ {Money}kr ]").Append("Go back").ToArray();
-            Menu MoneyDenominationMenu = new Menu(">Please select the amount of money you want you insert to the vending machine.", MoneyOptions);
+            Menu MoneyDenominationMenu = new(">Please select the amount of money you want you insert to the vending machine.", MoneyOptions);
             int SelectedAmount = MoneyDenominationMenu.Start();
 
             if(SelectedAmount == MoneyDenominations.Length)

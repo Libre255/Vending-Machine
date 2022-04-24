@@ -4,10 +4,10 @@ namespace Vending_Machine
 {
     public partial class VendingMachine
     {
-        protected List<AProduct> MyPurchasedItems = new List<AProduct>();
+        protected List<AProduct> MyPurchasedItems = new();
         public void MyAccount()
         {
-            Menu MyAccountMenu = new Menu("Your Account info", new string[] { "My items", "Vending machine money pool", "Go back" });
+            Menu MyAccountMenu = new("Your Account info", new string[] { "My items", "Vending machine money pool", "Go back" });
             int SelectedOption = MyAccountMenu.Start();
 
             switch (SelectedOption)
@@ -38,7 +38,7 @@ namespace Vending_Machine
             else
             {
                 string[] PurchasedItemsName = MyPurchasedItems.Select(p => p.Name).Append("Go Back").ToArray();
-                Menu PurchasedMenu = new Menu("Here is the list of things you buyed", PurchasedItemsName);
+                Menu PurchasedMenu = new("Here is the list of things you buyed", PurchasedItemsName);
                 int SelectedItemIndex = PurchasedMenu.Start();
                 bool selectedGoBack = (SelectedItemIndex == PurchasedItemsName.Length - 1);
 
@@ -55,30 +55,30 @@ namespace Vending_Machine
         protected void ItemInfo(int ItemIndex)
         {
             AProduct Item = MyPurchasedItems[ItemIndex];
-            Menu ItemMenu = new Menu($" [ {Item.Name} ]", new string[] { "Use", "Description", "Go back" });
+            Menu ItemMenu = new($" [ {Item.Name} ]", new string[] { "Use", "Description", "Go back" });
             int SelectedOption = ItemMenu.Start();
 
             switch (SelectedOption)
             {
-                case 0:UseItem(Item);
+                case 0:UseItem(ItemIndex);
                     break;
-                case 1:ExamineMyItem(Item, ItemIndex);
+                case 1:ExamineMyItem(ItemIndex);
                     break;
                 case 2:MyItems();
                     break;
             }
         }
-        private void UseItem(AProduct Item)
+        private void UseItem(int ItemIndex)
         {
-            Item.Use();
+            MyPurchasedItems[ItemIndex].Use();
             MyPurchasedItems.RemoveAll(ItemInfo => ItemInfo.Used);
             PressAny_Key_To_Go_Back();
             Clear();
             MyItems();
         }
-        private void ExamineMyItem(AProduct Item, int ItemIndex)
+        private void ExamineMyItem(int ItemIndex)
         {
-            Item.Examine();
+            MyPurchasedItems[ItemIndex].Examine();
             PressAny_Key_To_Go_Back();
             ItemInfo(ItemIndex);
         }

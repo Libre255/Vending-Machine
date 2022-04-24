@@ -25,12 +25,17 @@ namespace Vending_Machine
                      $"Description: {Description}");
         }
         public abstract void Use();
+        public abstract object Clone();
     }
 
-    public class Drink : AProduct
+    public class Drink : AProduct,ICloneable
     {
         public Drink(string DrinkName, int DrinkPrice, string DrinkDescription)
               :base(DrinkName, DrinkPrice, DrinkDescription){}
+        public  override object Clone()
+        {
+            return this.MemberwiseClone();
+        }
         public override void Use()
         {
             Used = true;
@@ -42,7 +47,10 @@ namespace Vending_Machine
     {
         public Chips(string ChipsName, int ChipsPrice, string ChipsDescription) 
               :base(ChipsName, ChipsPrice, ChipsDescription){}
-       
+        public override object Clone()
+        {
+            return this.MemberwiseClone();
+        }
         public override void Use()
         {
             WriteLine($"** Eated the chips {Name} **");
@@ -53,6 +61,10 @@ namespace Vending_Machine
     {
         public ProteinBar(string ProteinBarName, int ProteinBarPrice, string ProteinBarDescription):
                base(ProteinBarName, ProteinBarPrice, ProteinBarDescription){}
+        public override object Clone()
+        {
+            return this.MemberwiseClone();
+        }
         public override void Use()
         {
             WriteLine($"** Eated the proteinbar {Name} **");

@@ -3,7 +3,7 @@ namespace Vending_Machine
 {
     public partial class VendingMachine 
     {
-        List<AProduct> Products = new List<AProduct>()
+        List<AProduct> Products = new()
         {
             new Chips("Olitas Del Mar", 40, "Sea salted chips from Catalandia"),
             new ProteinBar("Vegan Chocholate Proteinbar", 80, "Planet friendly protein bar with delicious chocholate flavor"),
@@ -17,7 +17,7 @@ namespace Vending_Machine
         public void ShowAll()
         {
             string[] ProductsName = Products.Select(p => p.Name).Append("Go back").ToArray();
-            Menu ProductsMenu = new Menu("Select the product that you want to buy", ProductsName);
+            Menu ProductsMenu = new("Select the product that you want to buy", ProductsName);
             int SelectedProductIndex = ProductsMenu.Start();
 
             if (SelectedProductIndex == ProductsName.Length - 1) Start_VendingMachine();
@@ -25,7 +25,7 @@ namespace Vending_Machine
         }
         public void PurchaseSystem(int SPI)
         {
-            Menu ItemMenu = new Menu("Select your option", new string[] { "Purchase", "Check item info", "Go back" });
+            Menu ItemMenu = new("Select your option", new string[] { "Purchase", "Check item info", "Go back" });
             int SelectedOption = ItemMenu.Start();
 
             switch (SelectedOption)
@@ -38,10 +38,10 @@ namespace Vending_Machine
                     break;
             }
         }
+        
         public void Purchase(int SPI)
         {
             AProduct Product = Products[SPI];
-            
             if ((MoneyPool - Product.Price) < 0)
             {
                 WriteLine("Not enough money on the vending machine");
@@ -51,7 +51,7 @@ namespace Vending_Machine
             }else
             {
                 MoneyPool -= Product.Price;
-                MyPurchasedItems.Add(Product);
+                MyPurchasedItems.Add((AProduct)Product.Clone());
                 WriteLine($"*You buyed {Product.Name}*");
                 PressAny_Key_To_Go_Back();
                 ShowAll();

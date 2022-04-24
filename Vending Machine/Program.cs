@@ -5,7 +5,7 @@ namespace Vending_Machine
     {
         static void Main()
         {
-            VendingMachine VendingMachine = new VendingMachine();
+            VendingMachine VendingMachine = new();
             VendingMachine.Start_VendingMachine();
         }
     }
