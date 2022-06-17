@@ -4,16 +4,17 @@ namespace Vending_Machine
 {
     public partial class VendingMachine
     {
-        protected List<AProduct> MyPurchasedItems = new();
+        public List<AProduct> MyPurchasedItems = new();
         public void MyAccount()
         {
-            Menu MyAccountMenu = new("Your Account info", new string[] { "My items", "Vending machine money pool", "Go back" });
-            int SelectedOption = MyAccountMenu.Start();
+            string MyAccountMenuTitle = "Your Account info";
+            string[] AccountOptions = { "My items", "Vending machine money pool", "Go back" };
+            int SelectedOption = new Menu(MyAccountMenuTitle, AccountOptions).Start();
 
             switch (SelectedOption)
             {
                 case 0:
-                    MyItems();
+                    CheckAmountOfItems();
                     break;
                 case 1:
                     VendingMachineMoneyPool();
@@ -23,12 +24,12 @@ namespace Vending_Machine
                     break;
             }
         }
-        protected void VendingMachineMoneyPool()
+        public void VendingMachineMoneyPool()
         {
             WriteLine($"[ You have currectly {MoneyPool}kr in the vending machine ]");
             GoBackToMyAccount();
         }
-        protected void MyItems()
+        public void CheckAmountOfItems()
         {
             if (MyPurchasedItems.Count <= 0)
             {
@@ -37,52 +38,58 @@ namespace Vending_Machine
             }
             else
             {
-                string[] PurchasedItemsName = MyPurchasedItems.Select(p => p.Name).Append("Go Back").ToArray();
-                Menu PurchasedMenu = new("Here is the list of things you buyed", PurchasedItemsName);
-                int SelectedItemIndex = PurchasedMenu.Start();
-                bool selectedGoBack = (SelectedItemIndex == PurchasedItemsName.Length - 1);
-
-                if (selectedGoBack)
-                {
-                    MyAccount();
-                }
-                else
-                {
-                    ItemInfo(SelectedItemIndex);
-                }
+                DisplayMyItems();
             }
         }
-        protected void ItemInfo(int ItemIndex)
+        public void DisplayMyItems()
         {
-            AProduct Item = MyPurchasedItems[ItemIndex];
-            Menu ItemMenu = new($" [ {Item.Name} ]", new string[] { "Use", "Description", "Go back" });
-            int SelectedOption = ItemMenu.Start();
+            string[] MyItemsNames = ProductsNames(MyPurchasedItems);
+            int SelectedItemIndex = new Menu("Here is the list of things you buyed", MyItemsNames).Start();
+
+            if (MyItemsNames[SelectedItemIndex] == "Go back")
+            {
+                MyAccount();
+            }
+            else
+            {
+                ItemInfo(SelectedItemIndex);
+            }
+        }
+        readonly string[] Item_Options = { "Use", "Description", "Go back" };
+        public void ItemInfo(int ItemIndex)
+        {
+            string ItemName = $" [ {MyPurchasedItems[ItemIndex].Name} ]";
+            int SelectedOption = new Menu(ItemName, Item_Options).Start();
 
             switch (SelectedOption)
             {
-                case 0:UseItem(ItemIndex);
+                case 0:UseSelectedItem(ItemIndex);
                     break;
                 case 1:ExamineMyItem(ItemIndex);
                     break;
-                case 2:MyItems();
+                case 2:CheckAmountOfItems();
                     break;
             }
         }
-        private void UseItem(int ItemIndex)
+        public void UseSelectedItem(int ItemIndex)
+        {
+            UseItem(ItemIndex);
+            PressAny_Key_To_Go_Back();
+            Clear();
+            CheckAmountOfItems();
+        }
+        public void UseItem(int ItemIndex)
         {
             MyPurchasedItems[ItemIndex].Use();
             MyPurchasedItems.RemoveAll(ItemInfo => ItemInfo.Used);
-            PressAny_Key_To_Go_Back();
-            Clear();
-            MyItems();
         }
-        private void ExamineMyItem(int ItemIndex)
+        public void ExamineMyItem(int ItemIndex)
         {
             MyPurchasedItems[ItemIndex].Examine();
             PressAny_Key_To_Go_Back();
             ItemInfo(ItemIndex);
         }
-        protected void GoBackToMyAccount()
+        public void GoBackToMyAccount()
         {
             PressAny_Key_To_Go_Back();
             MyAccount();

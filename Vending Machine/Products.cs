@@ -3,20 +3,17 @@ namespace Vending_Machine
 {
     public abstract class AProduct
     {
-        private string iName;
-        private int iPrice;
-        private string iDescription;
-        private bool iUsed = false;
-        public string Name { get { return iName; } set { iName = value; } }
-        public int Price { get { return iPrice; } set { iPrice = value; } }
-        public string Description { get { return iDescription; } set { iDescription = value; } }
-        public bool Used { get { return iUsed; } set { iUsed = value; } }
+        public string Name { get; set; }
+        public int Price { get; set; }
+        public string Description { get; set; }
+        public bool Used { get; set; }
 
         public AProduct (string ItemName, int ItemPrice, string ItemDescription)
         {
             Name = ItemName;
             Price = ItemPrice;
             Description = ItemDescription;
+            Used = false;
         }
         public void Examine()
         {

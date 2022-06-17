@@ -4,8 +4,8 @@ namespace Vending_Machine
 {
     public interface IVending
     {
-        void Purchase(int SPI);
-        void ShowAll();
+        void PurchaseSystem(int SPI);
+        void ShowAllProducts();
         void InsertMoney();
         void EndTransaction();
     }
